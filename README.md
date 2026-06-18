@@ -44,7 +44,8 @@ Astro 5 — no database, no server runtime, no client framework. Output is plain
 | Matrix services | 7 (→ 56 combo pages, all `noindex` + out of sitemap) |
 | Styling | Light Sonoran-desert palette: navy bands + **terracotta** accent + warm-sand soft sections (a "desert-rat" curation of the base template) |
 | Form backend | **Call-only** (`formEndpoint=""`) — wire to Web3Forms / Formspree / a Worker later |
-| Phone / email / domain | Placeholders (`(480) 555-0172`, `eastvalleymobilerv.com`) — replace before launch |
+| Domain | **`eastvalleymobilervrepair.com`** (live/real) — set in `site.ts` + `astro.config.mjs` |
+| Phone / email | Placeholders (`(480) 555-0172`, `service@eastvalleymobilervrepair.com`) — replace before launch |
 
 ---
 
