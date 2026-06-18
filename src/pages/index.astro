@@ -1,0 +1,259 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ServiceAreaMap from '@components/ServiceAreaMap.astro';
+import FaqSection from '@components/FaqSection.astro';
+import FinalCta from '@components/FinalCta.astro';
+import QuoteForm from '@components/QuoteForm.astro';
+import CityLinks from '@components/CityLinks.astro';
+import { SITE, tel } from '@config/site';
+import { SERVICES, type Faq } from '@config/services';
+import { serviceUrl } from '../lib/urls';
+import { defaultHero } from '../lib/images';
+import { faqPage } from '../lib/schema';
+
+const title = `Mobile RV Repair in the East Valley — AC, Slide-Outs & More`;
+const description = `Mobile RV repair across the East Valley: rooftop AC, electrical and batteries, slide-outs, water heaters, roof leaks, and generators. We come to your site, driveway, or RV park and fix the rig where it sits. Call ${SITE.phoneDisplay}.`;
+
+// Homepage FAQs (rendered + FAQ schema via FaqSection / faqPage).
+const homeFaqs: Faq[] = [
+  {
+    q: 'Are you really mobile — you come to my rig?',
+    a: 'Yes. We are a fully mobile RV repair service. We bring the tools, diagnostics, and common parts to your home, your RV park site, the storage lot, or wherever the rig is parked across the East Valley, and do the repair there. There is no shop to tow to and no dealer service-lane wait.',
+  },
+  {
+    q: 'What do you work on?',
+    a: 'Rooftop air conditioners, 12V and 120V electrical and batteries, slide-outs, water heaters, roof leaks and resealing, and onboard generators — on motorhomes, fifth wheels, travel trailers, and toy haulers. We also do full mobile RV inspections for buyers, sellers, and pre-trip checks.',
+  },
+  {
+    q: 'How do I get a quote?',
+    a: 'Call us with the type of rig, the make and year, and a quick description of what is wrong — AC not cooling, no hot water, a slide that will not move, a roof leak, no shore power. That is usually enough for a straight quote, or a clear plan to diagnose it on-site. You can also send details through the quote form.',
+  },
+  {
+    q: 'My AC died and it’s 110 out — can you come the same day?',
+    a: 'A dead AC in Arizona summer, especially with people or pets in the rig, is treated as urgent. Same-day availability is often possible. Call with your location and the make of the unit and we will give you a real time, not a runaround.',
+  },
+  {
+    q: 'Do you come to the RV resorts and storage lots?',
+    a: 'Yes — a lot of our work happens right at the 55-plus resorts in Mesa and Apache Junction and at storage lots across the Valley. Just confirm your resort or facility allows on-site mobile service and that we can get access to the coach.',
+  },
+  {
+    q: 'What areas do you cover?',
+    a: 'Mesa, Apache Junction, Gilbert, Chandler, Queen Creek, Tempe, Scottsdale, San Tan Valley, and the surrounding East Valley communities. If you are not sure we reach you — or you are boondocking out past town — call and ask.',
+  },
+];
+
+const jsonLd = faqPage(homeFaqs) ?? [];
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <!-- 1. Simple bold headline — no background image, no subtext -->
+  <section class="lp-hero">
+    <div class="container">
+      <h1>Mobile RV Repair in {SITE.region}</h1>
+    </div>
+  </section>
+
+  <!-- 2. Photo + quote form -->
+  <section class="section-sm">
+    <div class="container split">
+      <div class="lp-photo">
+        <Image
+          src={defaultHero}
+          alt={`Mobile RV repair in ${SITE.region}`}
+          widths={[480, 760, 1000]}
+          sizes="(max-width: 920px) 100vw, 560px"
+          fetchpriority="high"
+          loading="eager"
+        />
+      </div>
+      <QuoteForm source="home-hero" />
+    </div>
+  </section>
+
+  <!-- 3. Intro / About -->
+  <section class="section section-soft" id="about">
+    <div class="container prose">
+      <h2>We Fix RVs — Right Where They’re Parked.</h2>
+      <p>
+        We’re a mobile RV repair crew serving {SITE.region} and the surrounding communities. A
+        rooftop AC that quit in the heat, dead house batteries, a slide-out stuck halfway, no hot
+        water, a roof leaking after a monsoon, or a generator that won’t start after a long sit — we
+        handle the systems that actually break down out here, and we bring it to wherever the rig is
+        set up.
+      </p>
+      <p>
+        Whether you’re a snowbird living in the coach, a full-timer, or a weekend owner with a rig
+        parked in the side yard, you shouldn’t have to lose your home to a dealer service lane for a
+        month. Tell us your rig and what it’s doing, and we’ll give you a straight quote and a real
+        time.
+      </p>
+      <ul class="checklist">
+        <li>Rooftop AC repair — cooling again, fast</li>
+        <li>12V &amp; 120V electrical, batteries, solar &amp; lithium</li>
+        <li>Slide-outs, water heaters &amp; generators</li>
+        <li>Roof leak repair &amp; resealing before the monsoon</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. What We Fix — a section per service (alternating rows) -->
+  <section class="section section-soft" id="services">
+    <div class="container">
+      <div class="section-head">
+        <h2>What We Fix</h2>
+        <p class="lead muted">
+          From a dead rooftop AC to a stuck slide or a generator that won’t start, here’s what we
+          handle for {SITE.region} RVers.
+        </p>
+      </div>
+
+      {SERVICES.map((s, i) => (
+        <div class:list={['srow', { reverse: i % 2 === 1 }]}>
+          <div class="srow-media">
+            <a href={serviceUrl(s)}>
+              <Image
+                src={s.image}
+                alt={s.imageAlt}
+                widths={[480, 720, 960]}
+                sizes="(max-width: 920px) 100vw, 500px"
+                loading="lazy"
+                style="border-radius:var(--radius);width:100%;"
+              />
+            </a>
+          </div>
+          <div class="srow-body">
+            {s.emergency && <span class="badge">Urgent</span>}
+            <h3><a href={serviceUrl(s)}>{s.name}</a></h3>
+            <p>{s.description}</p>
+            <p class="srow-actions">
+              <a class="btn btn-primary" href={serviceUrl(s)}>More on {s.short} →</a>
+              <a class="btn btn-call" href={tel()}>Call {SITE.phoneDisplay}</a>
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 4. Mobile Service Across the East Valley (maps + coverage) -->
+  <ServiceAreaMap />
+
+  <!-- 5. AC down or a slide stuck? — desert urgency -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>AC Down in the Heat? Roof Leaking? Don’t Wait.</h2>
+        <p class="lead muted">
+          Some RV problems can’t sit in the desert. A few of them mean you should call today — before
+          the heat, the monsoon, or a long sit turns a small fix into a big one.
+        </p>
+      </div>
+      <div class="issue-grid">
+        <div class="card">
+          <h3>A dead AC is an emergency here</h3>
+          <p class="muted">
+            When it’s 110 out and the rooftop AC quits, the rig becomes unlivable in minutes —
+            dangerous if you have pets or are living aboard. Usually it’s a capacitor or fan motor we
+            can fix on-site the same visit. Call and we’ll prioritize it.
+          </p>
+        </div>
+        <div class="card">
+          <h3>A roof leak spreads quietly</h3>
+          <p class="muted">
+            By the time you see a ceiling stain, water has been getting into the structure for a
+            while. Desert sun cracks the sealant and the monsoon finds it. We reseal the roof before
+            the rot reaches the decking and walls.
+          </p>
+        </div>
+        <div class="card">
+          <h3>A slide stuck out can’t travel</h3>
+          <p class="muted">
+            A slide-out jammed open or grinding halfway leaves you unable to pack up and go. We
+            identify the system, get it moving or safely retracted on-site, and fix the cause so it
+            seals tight again.
+          </p>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:24px;">
+        <a class="btn btn-call btn-lg" href={tel()}>Call {SITE.phoneDisplay}</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 6. How It Works -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head">
+        <h2>How It Works</h2>
+        <p class="lead muted">Three steps, no dealer runaround.</p>
+      </div>
+      <div class="issue-grid">
+        <div class="card">
+          <h3>1. Call or request a quote</h3>
+          <p class="muted">
+            Call {SITE.phoneDisplay} or send the quote form. Tell us where the rig is parked and
+            we’ll give you a straight price and a real time.
+          </p>
+        </div>
+        <div class="card">
+          <h3>2. Tell us the rig &amp; the symptom</h3>
+          <p class="muted">
+            Give us the type, make, and year and what’s wrong — AC not cooling, no hot water, a
+            stuck slide, a roof leak, no power. That’s usually enough for an honest quote.
+          </p>
+        </div>
+        <div class="card">
+          <h3>3. We come to you</h3>
+          <p class="muted">
+            We meet the rig at your home, RV park site, storage lot, or wherever it’s parked and do
+            the work on-site — most repairs in one visit, with a straight answer on what failed.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Service area list -->
+  <CityLinks
+    title={`Service Area — Across ${SITE.region} & the Surrounding Communities`}
+    sub="Mobile RV repair for every corner of the East Valley we cover."
+  />
+
+  <!-- 8. FAQ -->
+  <FaqSection faqs={homeFaqs} title="Questions We Hear a Lot" />
+
+  <!-- Final CTA -->
+  <FinalCta />
+</BaseLayout>
+
+<style>
+  .srow-body .badge {
+    display: inline-block;
+    background: #b42318;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+  }
+  .srow-body h3 {
+    font-size: 1.35rem;
+    margin-bottom: 8px;
+  }
+  .srow-body h3 a {
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .srow-body h3 a:hover {
+    color: var(--green-dark);
+  }
+  .srow-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+</style>
