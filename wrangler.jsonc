@@ -1,9 +1,13 @@
 {
-  // Cloudflare static deploy (Workers Static Assets). No worker script — pure static.
   "name": "ev-mobile-rv",
   "compatibility_date": "2025-01-01",
-  "assets": {
-    "directory": "./dist",
-    "not_found_handling": "404-page"
+  "main": "worker/index.js",
+  "assets": { "directory": "./dist", "binding": "ASSETS", "not_found_handling": "404-page" },
+  "d1_databases": [ { "binding": "DB", "database_name": "arabuilds-intake", "database_id": "aa1e362d-1057-4832-82a7-c19517e3214e" } ],
+  "vars": {
+    "SITE_SLUG": "ev-mobile-rv",
+    "COMPANY": "East Valley Mobile RV Repair",
+    "ALERT_TO": "azbaghda@gmail.com",
+    "ALERT_FROM": "East Valley Mobile RV Repair <onboarding@resend.dev>"
   }
 }
