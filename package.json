@@ -1,6 +1,6 @@
 {
   "name": "ev-mobile-rv",
-  "description": "Lead-gen site for East Valley Mobile RV Repair — mobile RV repair across the East Valley of metro Phoenix, Arizona.",
+  "description": "Lead-gen site for East Valley Mobile RV Repair \u2014 mobile RV repair across the East Valley of metro Phoenix, Arizona.",
   "type": "module",
   "version": "1.0.0",
   "private": true,
@@ -12,7 +12,8 @@
     "build": "astro build",
     "check": "astro check",
     "preview": "astro preview",
-    "deploy": "astro build && npx wrangler deploy"
+    "deploy": "astro build && npx wrangler deploy",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
